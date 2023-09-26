@@ -1,4 +1,4 @@
-FROM golang:1.21 AS builder
+FROM golang:1.21.1-alpine3.18 AS builder
 
 WORKDIR /app
 
@@ -8,13 +8,11 @@ COPY /app/main.go ./
 RUN go build -o /fullCycle
 
 
-FROM gcr.io/distroless/base-debian10
+FROM scratch
 
 WORKDIR /
 
 COPY --from=builder /fullCycle /fullCycle
-
-USER nonroot:nonroot
 
 CMD [ "/fullCycle" ] 
 	
